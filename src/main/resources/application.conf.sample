@@ -1,0 +1,8 @@
+# mongodb store
+mongo.url="<mongodb_url>"
+mongo.port="<port>"
+mongo.username="<username>"
+mongo.password="<password>"
+mongo.database="<database>"
+mongo.collection="<collection>"
+
