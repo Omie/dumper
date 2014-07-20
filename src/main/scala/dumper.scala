@@ -21,12 +21,11 @@ object dumper {
         return (_database, _collection, mongoClient)
     }
 
-    def getDumpObject(dataType:String, data:String, title:String, tags:String) : MongoDBObject = {
+    def getDumpObject(dataType:String, data:String, tags:String) : MongoDBObject = {
         val newdump = MongoDBObject()
         val newdata = Map (
             "type" -> dataType,
             "data" -> data,
-            "title" -> title,
             "tags" -> tags
             )
         newdump += "dump" -> newdata
@@ -35,17 +34,34 @@ object dumper {
 
 
     def main(args: Array[String]) = {
+        parser.parse(args, Config()) map { config =>
 
-        val (_database, _collection, _mclient) = initMongoFromConf()
+          val (_database, _collection, _mclient) = initMongoFromConf()
 
-        val db = _mclient(_database)
-        var collection = db(_collection)
+          val db = _mclient(_database)
+          var collection = db(_collection)
 
-        var newdump = getDumpObject("text", "hello world2", "greeting", "greeting hello world")
-        collection.save(newdump)
+          var newdump = getDumpObject(config.dataType, config.data, config.tags)
+          collection.save(newdump)
 
-        println("data dumped")
+          println("data dumped")
 
+        } getOrElse {
+          // arguments are bad, error message will have been displayed
+        }
+
+    }
+
+    var dataType:String = null;
+    val parser = new scopt.OptionParser[Config]("dumper") {
+      head("dumper", "1.x")
+      opt[String]('t', "type") action { (x, c) =>
+        c.copy(dataType = x) } text("type of data. text|url|imageurl")
+      opt[String]('T', "tags") action { (x, c) =>
+        c.copy(tags = x) } text("list of related tags separated by space in double quotes")
+      help("help") text("prints this usage text")
+      arg[String]("data") required() action { (x, c) =>
+        c.copy(data = x) } text("data to be dumped")
     }
 
 }
