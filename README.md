@@ -10,7 +10,8 @@ dumper
 
 build
 ---------------
-
+$ sbt update
+$ sbt assembly
 
 
 setup
