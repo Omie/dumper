@@ -30,15 +30,14 @@ why?
 
 usage
 ---------------
-Usage: dumper [options] data
-
-  -t <value> | --type <value>
+    Usage: dumper [options] data
+    -t <value> | --type <value>
         type of data. text|url|imageurl
-  -T <value> | --tags <value>
+    -T <value> | --tags <value>
         list of related tags separated by space in double quotes
-  --help
+    --help
         prints this usage text
-  data
+    data
         data to be dumped
 
 
